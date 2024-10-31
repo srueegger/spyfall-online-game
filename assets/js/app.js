@@ -78,6 +78,8 @@ document.addEventListener("DOMContentLoaded", function(e){
         /* Das GameObject in die globale Variable speichern */
         gameData = data.gameObject;
         console.log('gameData:', gameData);
+        /* Aktuelle URL anpassen, und den Paramete "lobby" mit der LobbyID anhängen */
+        history.pushState(null, null, '?lobby=' + gameData.lobbyID);
       });
     });
 
