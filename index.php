@@ -37,5 +37,12 @@ if (!defined( 'ABSPATH' )) {
 	define('ABSPATH', __DIR__ . '/');
 }
 
+/* Helper Functionen einbinden */
+require_once(ABSPATH . 'consts.php');
+require_once(ABSPATH . 'helper-functions.php');
+
+/* SQLite Datenbank erstellen */
+createDB();
+
 /* APP laden */
 require_once(ABSPATH . 'app.php');

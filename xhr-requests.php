@@ -8,6 +8,7 @@ if (!defined( 'ABSPATH' )) {
 }
 
 /* Helper Functionen einbinden */
+require_once(ABSPATH . 'consts.php');
 require_once(ABSPATH . 'helper-functions.php');
 
 /* Diese Datei verwaltet alle eingehenden XHR Requests */
@@ -59,12 +60,27 @@ Funktion zum erstellen eines neuen Spiels:
 function startNewGame( $playerName ) {
   $lobbyID = uniqid();
   $playerUUID = uniqid();
-  $_SESSION['game'] = [
+  /* Leeres Array mit allen Spielern erstelen */
+  $players = [];
+  $players = addPlayerToGame( $players, $playerName, $playerUUID );
+  /* Spiel in der Datenbank erstellen */
+  $db = new SQLite3(DB_NAME);
+  $stmt = $db->prepare("INSERT INTO games (LobbyID, GMID, players) VALUES (:lobbyID, :playerUUID, :players)");
+  $stmt->execute();
+  $gameID = $db->lastInsertRowID();
+  $db->close();
+
+
+  /* Spiel->Object erstellen */
+  $gameArray = [
+    'gameID' => $gameID,
     'lobbyID' => $lobbyID,
     'playerUUID' => $playerUUID,
     'playerName' => htmlspecialchars($playerName, ENT_QUOTES, 'UTF-8'),
-    'isGameMaster' => true
+    'isGameMaster' => true,
+    'players' => $players
   ];
+  $_SESSION['game'] = $gameArray;
   $return = [
     'status' => 'Spiel erstellt',
     'gameObject' => $_SESSION['game']
