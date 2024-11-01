@@ -20,6 +20,7 @@ if (!defined('ABSPATH')) {
     <!-- App Container, hier wird JavaScript die Spielausgabe rendern -->
     <div id="app"></div>
     <!-- HTML Templates über den HTML - Template Standard -->
+    <!-- Template für die Erstellung eines neuen Spiels -->
     <template id="createNewGame">
       <div class="container">
         <div class="row justify-content-center">
@@ -40,6 +41,73 @@ if (!defined('ABSPATH')) {
             </div>
           </div>
         </div>
+        </div>
+      </div>
+    </template>
+    <!--
+    Template für Lobby erstellen -> Folgende Elemente müssen hier dargestellt werden:
+    - Spielerliste (man muss sehen ob eine Spieler bereit ist oder nicht)
+    - Bereit-Button
+    - Start-Button
+    - Link zum Lobby teilen
+    - ChatBox wo die Spieler miteinander kommunizieren können
+    -->
+    <template id="lobby">
+      <div class="container">
+        <div class="row justify-content-center">
+          <!-- Spielerliste -->
+          <div class="col-12 col-6">
+            <div class="card">
+              <div class="card-header">
+                <h5 class="card-title">Spielerliste</h5>
+              </div>
+              <div class="card-body">
+                <div class="mb-3">
+                  <ul id="playerList" class="list-group">
+                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                      <div class="fw-bold">Spielername</div>
+                      <span class="badge text-bg-warning">Nicht bereit</span>
+                    </li>
+                  </ul>
+                </div>
+                <button id="readyButton" class="btn btn-primary">Ich bin bereit</button>
+                <button id="startButton" class="btn btn-success">Spiel starten</button>
+              </div>
+            </div>
+          </div>
+          <!-- Chat Ansicht -->
+          <div class="col-12 col-4">
+            <div class="card">
+              <div class="card-header">
+                <h5 class="card-title">Chat</h5>
+              </div>
+              <div class="card-body">
+                <div class="mb-3">
+                  <ul id="chatBox" class="list-group">
+                    <li class="list-group">
+                      <div class="ms-2 me-auto">
+                        <div class="fw-bold">Spielername</div>
+                          <p>Chatnachricht</p>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <!-- Link teilen -->
+            <div class="card mt-3">
+              <div class="card-header">
+                <h5 class="card-title">Spieler einladen</h5>
+              </div>
+              <div class="card-body">
+                <div class="mb-3">
+                  <input type="text" class="form-control" id="lobbyLink" readonly>
+                </div>
+                <!-- Button zum Inhalt kopieren -->
+                <button id="copyLobbyLinkButton" class="btn btn-primary">Link kopieren</button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </template>
