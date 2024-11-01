@@ -66,10 +66,13 @@ if (!defined('ABSPATH')) {
               <div class="card-body">
                 <div class="mb-3">
                   <ul id="playerList" class="list-group">
-                    <li class="list-group-item d-flex justify-content-between align-items-start">
-                      <div class="fw-bold">Spielername</div>
-                      <span class="badge text-bg-warning">Nicht bereit</span>
-                    </li>
+                    <p class="card-text placeholder-glow">
+                      <span class="placeholder col-7"></span>
+                      <span class="placeholder col-4"></span>
+                      <span class="placeholder col-4"></span>
+                      <span class="placeholder col-6"></span>
+                      <span class="placeholder col-8"></span>
+                    </p>
                   </ul>
                 </div>
                 <div class="js_gm_visible mb-3 d-none">

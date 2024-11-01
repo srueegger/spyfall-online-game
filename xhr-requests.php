@@ -36,6 +36,10 @@ if (isset($_POST['action'])) {
       echo json_encode(['status' => 'Einem Spiel beitreten...']);
       exit;
       break;
+    case 'updatePlayerList':
+      $gameObject = json_decode($_POST['gameObject'], true);
+      updatePlayerList($gameObject);
+      break;
     default:
       echo json_encode(['error' => 'Unbekannte Aktion']);
       exit;
@@ -57,12 +61,12 @@ Funktion zum erstellen eines neuen Spiels:
   - SpielerName
   - GameMaster (bool)
 */
-function startNewGame( $playerName ) {
+function startNewGame($playerName) {
   $lobbyID = uniqid();
   $playerUUID = uniqid();
   /* Leeres Array mit allen Spielern erstelen */
   $players = [];
-  $players = addPlayerToGame( $players, $playerName, $playerUUID );
+  $players = addPlayerToGame($players, $playerName, $playerUUID);
   /* Spiel in der Datenbank erstellen */
   $db = new SQLite3(DB_NAME);
   $stmt = $db->prepare("INSERT INTO games (LobbyID, GMID, players) VALUES (:lobbyID, :playerUUID, :players)");
@@ -89,5 +93,23 @@ function startNewGame( $playerName ) {
     'gameObject' => $_SESSION['game']
   ];
   echo json_encode($return);
+  exit;
+}
+
+/* Funktion zum aktualisieren der Spieler Liste. Zurzeit wird nur überprüft ob es neue Spieler im Spiel gibt, falls ja wird das GameObject entsprechend aktualisert und an den Client zurückgesendet */
+function updatePlayerList($gameObject) {
+  /* Aus der Datenbank die aktuellen Spielerliste auslesen */
+  $db = new SQLite3(DB_NAME);
+  $stmt = $db->prepare("SELECT players FROM games WHERE id = :gameID");
+  $stmt->bindValue(':gameID', $gameObject['gameID'], SQLITE3_INTEGER);
+  $result = $stmt->execute();
+  $row = $result->fetchArray();
+  $players = json_decode($row['players'], true);
+  $db->close();
+  /* Spielerliste aktualisieren */
+  $gameObject['players'] = $players;
+  /* Aktuaulisierte Spielerdaten in der $_SESSION speichern und an den Client zurückgeben */
+  $_SESSION['game'] = $gameObject;
+  echo json_encode(['status' => 'Lobby aktualisiert', 'gameObject' => $_SESSION['game']]);
   exit;
 }

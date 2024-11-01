@@ -11,6 +11,8 @@ document.addEventListener("DOMContentLoaded", function(e){
     const fetchUri = '/xhr-requests.php';
     /* Globales leeres Spiel-Daten Objekt erstellen */
     let gameData = {};
+    /* Weitere Globale Variabeln erstellen */
+    let playerListUpdateInterval;
 
     /* JavaScript Funktionen initialisieren */
     init();
@@ -109,34 +111,64 @@ document.addEventListener("DOMContentLoaded", function(e){
       }
     }
 
-    /* Fucntion, die die Spielerliste in der Lobby aktualisiert. Die Liste soll über einen Fetch call alle 2 Sekunden ausgeführt werden */
+    /* Funktion, die die Spielerliste in der Lobby aktualisiert. Die Liste soll über einen Fetch call alle 2 Sekunden ausgeführt werden */
     function updatePlayerList() {
       console.log('updatePlayerList()');
-      /* Funktion alle 2 Sekunden ausführen */
-      setInterval(function() {
-        /* Daten per JavaScript Fetch Methode versenden */
-        /* fetch(fetchUri, {
+      let jsonGameData = JSON.stringify(gameData);
+    
+      function fetchAndUpdate() {
+        fetch(fetchUri, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
             'X-CSRF-Token': csrfToken
           },
           body: new URLSearchParams({
-            action: 'getPlayerList',
-            lobbyID: gameData.lobbyID
+            action: 'updatePlayerList',
+            gameObject: jsonGameData
           })
         })
         .then(response => response.json())
         .then(data => {
           console.log(data);
-          document.querySelector('#playerList').innerHTML = '';
-          data.players.forEach(player => {
+          // Spielerliste leeren
+          const playerList = document.querySelector('#playerList');
+          playerList.innerHTML = '';
+          // Spielerliste neu befüllen
+          Object.values(data.gameObject.players).forEach(player => {
+            /* Liste aufbereiten */
             const li = document.createElement('li');
-            li.innerText = player;
-            document.querySelector('#playerList').appendChild(li);
+            li.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-start');
+            li.innerText = player.playerName;
+            /* Bereit / Nicht Bereit Badge aufbereiten */
+            const badge = document.createElement('span');
+            let badgeClass = player.ready ? 'bg-success' : 'bg-warning';
+            badge.classList.add('badge', 'rounded-pill', badgeClass);
+            badge.innerText = player.ready ? 'Bereit' : 'Nicht Bereit';
+            li.appendChild(badge);
+            /* Liste ausgeben */
+            playerList.appendChild(li);
           });
-        }); */
-      }, 2000);
+          // Nach erfolgreichem Abschluss erneut aufrufen
+          playerListUpdateInterval = setTimeout(fetchAndUpdate, 2000);
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          // Bei Fehler ebenfalls erneut aufrufen
+          playerListUpdateInterval = setTimeout(fetchAndUpdate, 2000);
+        });
+      }
+    
+      // Initialer Aufruf der Funktion
+      fetchAndUpdate();
+    }
+
+    /* Function um den Interval für das Aktualisieren der Nutzerliste wieder zu deaktivieren */
+    function stopUpdatingPlayerList() {
+      if (playerListUpdateTimeout) {
+        clearTimeout(playerListUpdateTimeout);
+        console.log('Stopped updating player list.');
+      }
     }
 
     /* Function die die Chat-Nachrichten jede Sekunde aktualisiert */
