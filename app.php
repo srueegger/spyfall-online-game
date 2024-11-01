@@ -58,7 +58,7 @@ if (!defined('ABSPATH')) {
       <div class="container">
         <div class="row justify-content-center">
           <!-- Spielerliste -->
-          <div class="col-12 col-lg-6">
+          <div class="col-12 col-lg-6 mb-3">
             <div class="card">
               <div class="card-header">
                 <h5 class="card-title">Spielerliste</h5>
@@ -72,8 +72,13 @@ if (!defined('ABSPATH')) {
                     </li>
                   </ul>
                 </div>
+                <div class="js_gm_visible mb-3 d-none">
+                  <label for="roundTime" class="form-label">Rundenzeit in Minuten</label>
+                  <input type="number" size="3" id="roundTime" value="8" class="form-control mt-3" placeholder="Rundenzeit in Minuten" required>
+                </div>
                 <button id="readyButton" class="btn btn-primary">Ich bin bereit</button>
-                <button id="startButton" class="btn btn-success">Spiel starten</button>
+                <button id="startButton" class="btn btn-success d-none js_gm_visible">Spiel starten</button>
+                <p class="d-none js_gm_visible">Das Spiel kann erst gestartet werden, wenn alle Spieler bereit sind.</p>
               </div>
             </div>
           </div>

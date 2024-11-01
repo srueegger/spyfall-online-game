@@ -63,7 +63,7 @@ function startNewGame( $playerName ) {
     'lobbyID' => $lobbyID,
     'playerUUID' => $playerUUID,
     'playerName' => htmlspecialchars($playerName, ENT_QUOTES, 'UTF-8'),
-    'gameMaster' => true
+    'isGameMaster' => true
   ];
   $return = [
     'status' => 'Spiel erstellt',

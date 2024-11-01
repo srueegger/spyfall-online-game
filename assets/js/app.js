@@ -98,6 +98,12 @@ document.addEventListener("DOMContentLoaded", function(e){
       updatePlayerList();
       /* Chatnachrichten aktualisieren */
       updateChatMessages();
+      /* Wenn der Spieler ein GameMaster ist, die GameMaster funktionen einblenden */
+      if (gameData.isGameMaster) {
+        document.querySelectorAll('.js_gm_visible').forEach(element => {
+          element.classList.remove('d-none');
+        });
+      }
     }
 
     /* Fucntion, die die Spielerliste in der Lobby aktualisiert. Die Liste soll über einen Fetch call alle 2 Sekunden ausgeführt werden */
