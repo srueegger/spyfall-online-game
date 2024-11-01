@@ -17,6 +17,8 @@ if (!defined('ABSPATH')) {
     <link href="./assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   </head>
   <body class="py-4">
+    <!-- Toast Container für Benachrichtigungen -->
+    <div id="notifications" class="toast-container top-0 end-0 p-3"></div>
     <!-- App Container, hier wird JavaScript die Spielausgabe rendern -->
     <div id="app"></div>
     <!-- HTML Templates über den HTML - Template Standard -->
@@ -56,7 +58,7 @@ if (!defined('ABSPATH')) {
       <div class="container">
         <div class="row justify-content-center">
           <!-- Spielerliste -->
-          <div class="col-12 col-6">
+          <div class="col-12 col-lg-6">
             <div class="card">
               <div class="card-header">
                 <h5 class="card-title">Spielerliste</h5>
@@ -76,7 +78,7 @@ if (!defined('ABSPATH')) {
             </div>
           </div>
           <!-- Chat Ansicht -->
-          <div class="col-12 col-4">
+          <div class="col-12 col-lg-4">
             <div class="card">
               <div class="card-header">
                 <h5 class="card-title">Chat</h5>
