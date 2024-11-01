@@ -46,7 +46,7 @@ document.addEventListener("DOMContentLoaded", function(e){
       const template = document.querySelector(templateID);
       /* Das neue Template in den App Bereich laden */
       app.appendChild(template.content.cloneNode(true));
-      /* Zusätzliche Funktionen ausführen */
+      /* Zusätzliche Funktionen ausführen, falls vorhanden */
       if( runAdditionalFunction ) {
         runAdditionalFunction();
       }
