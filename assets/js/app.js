@@ -53,37 +53,40 @@ document.addEventListener("DOMContentLoaded", function(e){
     }
 
     /* EventListener erstellen, der beim Submit des Formulars mit der ID "createNewGameForm" ausgefhrt wird */
-    document.querySelector('#createNewGameForm').addEventListener('submit', function(e) {
-      /* Verhindern, dass der Browser das Absenden des Formulars startet */
-      e.preventDefault();
-      console.log('createNewGameForm submit');
-      /* Formular-Daten auslesen */
-      const formData = new FormData(this);
-      console.log(formData.get('playerName'));
-      /* Daten per JavaScript Fetch Methode versenden */
-      fetch(fetchUri, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-          'X-CSRF-Token': csrfToken
-        },
-        body: new URLSearchParams({
-          action: 'startNewGame',
-          playerName: formData.get('playerName')
+    const createNewGameForm = document.querySelector('#createNewGameForm');
+      if( createNewGameForm ) {
+      createNewGameForm.addEventListener('submit', function(e) {
+        /* Verhindern, dass der Browser das Absenden des Formulars startet */
+        e.preventDefault();
+        console.log('createNewGameForm submit');
+        /* Formular-Daten auslesen */
+        const formData = new FormData(this);
+        console.log(formData.get('playerName'));
+        /* Daten per JavaScript Fetch Methode versenden */
+        fetch(fetchUri, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRF-Token': csrfToken
+          },
+          body: new URLSearchParams({
+            action: 'startNewGame',
+            playerName: formData.get('playerName')
+          })
         })
-      })
-      .then(response => response.json())
-      .then(data => {
-        console.log(data);
-        /* Das GameObject in die globale Variable speichern */
-        gameData = data.gameObject;
-        console.log('gameData:', gameData);
-        /* Aktuelle URL anpassen, und den Paramete "lobby" mit der LobbyID anhängen */
-        history.pushState(null, null, '?lobby=' + gameData.lobbyID);
-        /* Lobby Template laden */
-        loadTemplate('#lobby', joinLobby);
+        .then(response => response.json())
+        .then(data => {
+          console.log(data);
+          /* Das GameObject in die globale Variable speichern */
+          gameData = data.gameObject;
+          console.log('gameData:', gameData);
+          /* Aktuelle URL anpassen, und den Paramete "lobby" mit der LobbyID anhängen */
+          history.pushState(null, null, '?lobby=' + gameData.lobbyID);
+          /* Lobby Template laden */
+          loadTemplate('#lobby', joinLobby);
+        });
       });
-    });
+    }
 
     /*
     Funktion "joinLobby":

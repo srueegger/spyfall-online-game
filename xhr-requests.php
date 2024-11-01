@@ -66,6 +66,9 @@ function startNewGame( $playerName ) {
   /* Spiel in der Datenbank erstellen */
   $db = new SQLite3(DB_NAME);
   $stmt = $db->prepare("INSERT INTO games (LobbyID, GMID, players) VALUES (:lobbyID, :playerUUID, :players)");
+  $stmt->bindValue(':lobbyID', $lobbyID, SQLITE3_TEXT);
+  $stmt->bindValue(':playerUUID', $playerUUID, SQLITE3_TEXT);
+  $stmt->bindValue(':players', json_encode($players), SQLITE3_TEXT);
   $stmt->execute();
   $gameID = $db->lastInsertRowID();
   $db->close();
