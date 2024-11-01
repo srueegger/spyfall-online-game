@@ -8,7 +8,7 @@ if (!defined('ABSPATH')) {
 /* Function zum erstellen einer LobbyID */
 function createDB() {
   $db = new SQLite3(DB_NAME);
-  $db->exec("CREATE TABLE IF NOT EXISTS games (id INTEGER PRIMARY KEY, LobbyID TEXT, GMID INTEGER, players TEXT, started INTEGER DEFAULT 0, gameEndTime INTEGER DEFAULT 0)");
+  $db->exec("CREATE TABLE IF NOT EXISTS games (id INTEGER PRIMARY KEY, LobbyID TEXT, GMID INTEGER, players TEXT, started INTEGER DEFAULT 0, gameEndTime INTEGER DEFAULT 0, locationID INTEGER DEFAULT 0, SpyUUID TEXT DEFAULT '')");
   $db->close();
 }
 
